@@ -44,9 +44,7 @@ function net = obtain_network (N, training, min_error, ft, learning_rate)
             diff_vec(vec_random(i))=diff;
 
         endfor
-        diff_vec
         error_value = nnz(diff_vec)/rows(training{1});
-        error_value
 
     endwhile
 
