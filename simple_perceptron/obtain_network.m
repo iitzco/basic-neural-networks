@@ -1,4 +1,4 @@
-function net = obtain_network (N, training, min_error, ft, learning_rate)
+function net = obtain_network (N, training, min_error, ft, learning_rate, graph)
     
     if (rows(training{1})!=rows(training{2}))
         printf('Wrong training set\n');
@@ -53,9 +53,11 @@ function net = obtain_network (N, training, min_error, ft, learning_rate)
     count
     net = W;
 
-    plot(1:1:count,error_vec);
-    title('Error');
-    xlabel('Epocas');
-    ylabel('Error');
+    if (graph)
+        plot(1:1:count,error_vec);
+        title('Error');
+        xlabel('Epocas');
+        ylabel('Error');
+    endif
 
 endfunction       
