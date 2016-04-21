@@ -45,10 +45,17 @@ function net = obtain_network (N, training, min_error, ft, learning_rate)
 
         endfor
         error_value = nnz(diff_vec)/rows(training{1});
+        error_vec(count) = error_value;
+
 
     endwhile
 
     count
     net = W;
+
+    plot(1:1:count,error_vec);
+    title('Error');
+    xlabel('Epocas');
+    ylabel('Error');
 
 endfunction       
