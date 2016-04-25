@@ -41,10 +41,19 @@ function net = obtain_network (N, training, min_error, ft, learning_rate, graph)
     
             endfor
 
-            diff_vec(vec_random(i))=diff;
-
         endfor
-        error_value = nnz(diff_vec)/rows(training{1});
+
+        % Calculate error
+
+        all_entries=[ones(size(training{1},1),1).*-1 training{1}];
+
+        net_output = all_entries * W;
+
+        for i=1:rows(net_output)
+            net_output(i) = feval(ft,net_output(i));
+        endfor
+
+        error_value = sum(abs(training{2}-net_output))/rows(training{2});
         error_vec(count) = error_value;
 
 
