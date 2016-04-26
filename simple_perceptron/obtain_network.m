@@ -17,45 +17,38 @@ function net = obtain_network (N, training, min_error, ft, learning_rate, graph)
     while (error_value > min_error)
 
         count++;
-        vec_random=randperm(rows(training{1}));
-        diff_vec=zeros(rows(training{1}),1);
-
+        vec_random = randperm(rows(training{1}));
+        
         for i=1:rows(training{1})
-            
-            rand_entry=training{1}(vec_random(i),:);
-            vec_entry=[-1,rand_entry];
+            rand_entry = training{1}(vec_random(i),:);
 
+            vec_entry = [-1 rand_entry];
+            
             % Forward
-    
-            output = feval(ft, vec_entry * W);
 
-            % Learning process
+            h = vec_entry*W;
+
+            output = feval(ft, h);
+
+            % Learning
+
+            diff = training{2}(vec_random(i),:)-output;
             
-            expected = training{2}(vec_random(i),:);
+            delta = vec_entry'.*(learning_rate*diff);
 
-            diff = expected-output;
-            for j=1:rows(W)
-                
-                delta = learning_rate*diff*vec_entry(j);
-                W(j,:) = W(j,:)+delta;
-    
-            endfor
+            W = W + delta;
 
         endfor
 
-        % Calculate error
+        % error
 
-        all_entries=[ones(size(training{1},1),1).*-1 training{1}];
+        all_entries= [ones(size(training{1},1),1).*-1 training{1}];
 
-        net_output = all_entries * W;
+        net_output = feval(ft,all_entries*W);
 
-        for i=1:rows(net_output)
-            net_output(i) = feval(ft,net_output(i));
-        endfor
+        error_value = mean(abs(training{2}-net_output));
 
-        error_value = sum(abs(training{2}-net_output))/rows(training{2});
         error_vec(count) = error_value;
-
 
     endwhile
 
